@@ -38,3 +38,7 @@ def SNOT(x):
 
 def AMP(*args):
     return np.prod(args)
+
+
+def sigmoid(x, steepness, midpoint):
+    return 2/(1+np.exp(-steepness*(x-midpoint)))-1
