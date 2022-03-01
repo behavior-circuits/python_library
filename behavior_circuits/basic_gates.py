@@ -14,10 +14,30 @@ def check_gate_input(a, b):
 
     Returns:
         _type_: _description_
+
+    Examples:
+        >>> check_gate_input(1,1.0)
+        True
+
+        >>> check_gate_input(1,"a")
+        Traceback (most recent call last):
+            ...
+        TypeError: The inputs of a behavior circuit must be float
+
+        >>> check_gate_input(1.2,-1.2)
+        Traceback (most recent call last):
+            ...
+        ValueError: The inputs of a behavior circuit must be within [-1,1]
     """
+    try:
+        a = float(a)
+        b = float(b)
+    except:
+        raise TypeError(
+            "The inputs of a behavior circuit must be float")
     if norm(a) > 1 or norm(b) > 1:
         raise ValueError(
-            "The Input of a behavior circuit must be within [-1,1]")
+            "The inputs of a behavior circuit must be within [-1,1]")
     else:
         return True
 
@@ -31,6 +51,14 @@ def or_gate(a, b):
 
     Returns:
         float: output of or gate operation
+
+    Examples:
+        >>> or_gate(1,1)
+        1.0
+        >>> or_gate(0,0)
+        0.0
+        >>> or_gate(-1,0)
+        -1.0
     """
     check_gate_input(a, b)
     return a+b-a*b*tanh(a+b)/tanh(2)
@@ -45,6 +73,14 @@ def and_gate(a, b):
 
     Returns:
         float: output of and gate operation
+
+    Examples:
+        >>> and_gate(1,1)
+        1.0
+        >>> and_gate(0,0)
+        0.0
+        >>> and_gate(-1,0)
+        -0.0
     """
     check_gate_input(a, b)
     return a*b*tanh(a+b)/tanh(2)
@@ -61,6 +97,16 @@ def compare_gate(a, b):
 
     Returns:
         float: output of the gate operation comparing the both inputs
+
+    Examples:
+        >>> compare_gate(1,1)
+        0.0
+        >>> compare_gate(1,-1)
+        1.0
+        >>> compare_gate(-1,1)
+        -1.0
+        >>> compare_gate(1,0)
+        1.0
     """
     check_gate_input(a, b)
     return or_gate(a, -b)
@@ -77,6 +123,14 @@ def invoke_gate(a, b):
 
     Returns:
         float: output of the invoke gate operation
+
+    Examples:
+        >>> invoke_gate(0,1)
+        0.0
+        >>> invoke_gate(1,-1)
+        0.0
+        >>> invoke_gate(1,0)
+        1.0
     """
     check_gate_input(a, b)
     return and_gate(a, or_gate(a, b))
@@ -92,6 +146,14 @@ def prevail_gate(a, b):
 
     Returns:
         float: output of xor gate operation
+
+    Examples:
+        >>> prevail_gate(0,1)
+        1.0
+        >>> prevail_gate(1,-1)
+        1.0
+        >>> prevail_gate(1,0)
+        1.0
     """
     check_gate_input(a, b)
     return or_gate(a, or_gate(a, b))
@@ -106,6 +168,16 @@ def xor_gate(a, b):
 
     Returns:
         float: output of xor gate operation
+
+    Examples:
+        >>> xor_gate(0,1)
+        1.0
+        >>> xor_gate(1,1)
+        0.0
+        >>> xor_gate(1,0)
+        1.0
+        >>> xor_gate(1,-1.0)
+        0.0
     """
     check_gate_input(a, b)
     return compare_gate(a, b)*compare_gate(a, b)*or_gate(a, b)
@@ -121,15 +193,24 @@ def not_gate(a, smoothness=0):
 
     Returns:
         float: Inverted value
+
+    Examples:
+        >>> not_gate(1)
+        0.0
+        >>> not_gate(-1.0)
+        -0.0
+        >>> not_gate(0)
+        1.0
     """
     check_gate_input(a, 0)
     if a == 0:
-        a = 1
+        out = 1.0
     else:
         if smoothness == 0:
-            return sign(a) * (1 - abs(a))
+            out = sign(a) * (1 - abs(a))
         else:
-            return tanh(a*smoothness)/tanh(smoothness) * (1-abs(a))
+            out = tanh(a*smoothness)/tanh(smoothness) * (1-abs(a))
+    return float(out)
 
 
 def amp_gate(a, b):
@@ -144,6 +225,19 @@ def amp_gate(a, b):
 
     Returns:
         float: output of amp gate operation
+
+    Examples:
+        >>> amp_gate(1,0.5)
+        0.5
+        >>> amp_gate(0.5,1)
+        0.5
+        >>> amp_gate(1,-1)
+        -1.0
     """
     check_gate_input(a, b)
-    return a * b
+    return float(a * b)
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
