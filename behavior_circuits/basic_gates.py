@@ -22,7 +22,7 @@ def check_gate_input(a, b):
         >>> check_gate_input(1,"a")
         Traceback (most recent call last):
             ...
-        TypeError: The inputs of a behavior circuit must be float
+        TypeError: The inputs of a behavior circuit must be a number
 
         >>> check_gate_input(1.2,-1.2)
         Traceback (most recent call last):
@@ -34,7 +34,7 @@ def check_gate_input(a, b):
         b = float(b)
     except:
         raise TypeError(
-            "The inputs of a behavior circuit must be float")
+            "The inputs of a behavior circuit must be a number")
     if norm(a) > 1 or norm(b) > 1:
         raise ValueError(
             "The inputs of a behavior circuit must be within [-1,1]")

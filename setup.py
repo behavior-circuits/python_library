@@ -7,6 +7,6 @@ setuptools.setup(
     author='Jan Baumgärtner',
     license='MIT',
     description='...',
-    install_requires=['numpy>=1.17.4', 'doctest'],
+    install_requires=['numpy>=1.17.4'],
     packages=['behavior_circuits']
 )
