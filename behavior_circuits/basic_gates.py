@@ -1,5 +1,5 @@
 from numpy.linalg import norm
-from numpy import tanh, sign, abs, exp
+from numpy import tanh, sign, abs
 
 
 def check_gate_input(a, b):
@@ -15,7 +15,7 @@ def check_gate_input(a, b):
     Returns:
         _type_: _description_
     """
-    if norm(a) >= 1 or norm(b) >= 1:
+    if norm(a) > 1 or norm(b) > 1:
         raise ValueError(
             "The Input of a behavior circuit must be within [-1,1]")
     else:
